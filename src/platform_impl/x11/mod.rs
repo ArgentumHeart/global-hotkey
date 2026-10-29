@@ -160,6 +160,8 @@ fn register_hotkey(
                                 result.ignore_error();
                             }
                         }
+                        // https://github.com/tauri-apps/global-hotkey/pull/197
+                        let _ = conn.flush();
 
                         Err(Error::AlreadyRegistered(hotkey))
                     } else {
@@ -212,6 +214,9 @@ fn unregister_hotkey(
             result.ignore_error();
         }
     }
+
+    // https://github.com/tauri-apps/global-hotkey/pull/197
+    let _ = conn.flush();
 
     let entry = hotkeys.entry(keycode).or_default();
     entry.retain(|k| k.mods != modifiers);
